@@ -1,95 +1,98 @@
-AbleSpace Playwright Test
+# AbleSpace Playwright Test
 
-Automated UI test for the AbleSpace staging application using Playwright and TypeScript.
+Automated UI test for the AbleSpace staging application using **Playwright and TypeScript**.
 
 The test covers a student’s Reading goal workflow: open Take Data, select a step, open the Graph tab, and verify that the selected step and today’s date are displayed.
 
-Requirements
+## Requirements
 
-Node.js 18 or newer
+- Node.js 18 or newer
+- Google Chrome
+- Playwright
+- An existing AbleSpace staging account
+- A student named `Demo Student 3` with a Reading goal containing the step `Gets hands wet`
 
-Google Chrome
+## Setup
 
-Playwright
+1. Install project dependencies:
 
-An existing AbleSpace staging account
+   ```bash
+   npm install
+   ```
 
-A student named Demo Student 3 with a Reading goal containing the step Gets hands wet
+2. Install Playwright browsers:
 
-Setup
+   ```bash
+   npx playwright install
+   ```
 
-Install project dependencies:
+3. Create a `.env` file using `.env.example` as a template:
 
-npm install
+   ```env
+   BASE_URL=https://staging.ablespace.io
+   QA_EMAIL=your_test_email
+   QA_PASSWORD=your_test_password
+   ```
 
-Install Playwright browsers:
+   Credentials are optional fallbacks. The test uses an already-authenticated Chrome session.
 
-npx playwright install
-
-Create a .env file using .env.example as a template:
-
-BASE_URL=https://staging.ablespace.io
-QA_EMAIL=your_test_email
-QA_PASSWORD=your_test_password
-
-Credentials are optional fallbacks. The test uses an already-authenticated Chrome session.
-
-Login
+## Login
 
 The staging login uses a Firebase CAPTCHA/bot check that can prevent automated login. To avoid automating the CAPTCHA, log in manually using a separate Chrome profile.
 
-Close existing Chrome windows if necessary.
+1. Close existing Chrome windows if necessary.
+2. Open Windows PowerShell and start Chrome with remote debugging enabled:
 
-Open Windows PowerShell and start Chrome with remote debugging enabled:
+   ```powershell
+   & "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\temp\chrome-qa"
+   ```
 
-& "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\temp\chrome-qa"
+3. In the new Chrome window, open:
 
-In the new Chrome window, open:
+   https://staging.ablespace.io/signin
 
-https://staging.ablespace.io/signin
+4. Log in manually and leave the Chrome window open.
+5. Run the test from a second terminal.
 
-Log in manually and leave the Chrome window open.
+**Note:** The test must be configured to connect to the Chrome debugging session on port `9222`. Starting Chrome with this command alone does not automatically connect Playwright to it.
 
-Run the test from a second terminal.
-
-Note: The test must be configured to connect to the Chrome debugging session on port 9222. Starting Chrome with this command alone does not automatically connect Playwright to it.
-
-Run the Test
+## Run the Test
 
 Run the test suite:
 
+```bash
 npx playwright test
+```
 
 Open the HTML report:
 
+```bash
 npx playwright show-report
+```
 
-Test Coverage
+## Test Coverage
 
 The test verifies that:
 
-The Caseload page opens.
+1. The Caseload page opens.
+2. `Demo Student 3` is available.
+3. Take Data opens for the selected student.
+4. The `Gets hands wet` step can be selected.
+5. The selected step is marked as checked.
+6. The Graph tab displays `Gets hands wet`.
+7. The graph displays today's date in `MM/DD` format.
 
-Demo Student 3 is available.
+## Test Data and Limitations
 
-Take Data opens for the selected student.
+- The test uses an existing staging account and student.
+- Account registration is not automated.
+- Each run may record or modify session data on staging. Avoid unnecessary repeated runs.
+- The test depends on the specified student, Reading goal, and step being available.
+- Automated login may be blocked by the staging CAPTCHA/bot protection.
 
-The Gets hands wet step can be selected.
+## Security
 
-The selected step is marked as checked.
-
-The Graph tab displays Gets hands wet.
-
-The graph displays today's date in MM/DD format.
-
-Test Data and Limitations
-
-The test uses an existing staging account and student.
-
-Account registration is not automated.
-
-Each run may record or modify session data on staging. Avoid unnecessary repeated runs.
-
-The test depends on the specified student, Reading goal, and step being available.
-
-Automated login may be blocked by the staging CAPTCHA/bot protection.
+- Store credentials in `.env`, not in source code.
+- Keep `.env` listed in `.gitignore`.
+- Never commit passwords, authentication tokens, or session files to GitHub.
+- Use test data only.
