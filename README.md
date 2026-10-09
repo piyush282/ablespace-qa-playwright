@@ -1,10 +1,10 @@
-# AbleSpace Playwright Test
+ AbleSpace Playwright Test
 
 Automated UI test for the AbleSpace staging application using **Playwright and TypeScript**.
 
 The test covers a student’s Reading goal workflow: open Take Data, select a step, open the Graph tab, and verify that the selected step and today’s date are displayed.
 
-## Requirements
+ Requirements
 
 - Node.js 18 or newer
 - Google Chrome
@@ -12,7 +12,7 @@ The test covers a student’s Reading goal workflow: open Take Data, select a st
 - An existing AbleSpace staging account
 - A student named `Demo Student 3` with a Reading goal containing the step `Gets hands wet`
 
-## Setup
+ Setup
 
 1. Install project dependencies:
 
@@ -36,7 +36,7 @@ The test covers a student’s Reading goal workflow: open Take Data, select a st
 
    Credentials are optional fallbacks. The test uses an already-authenticated Chrome session.
 
-## Login
+ Login
 
 The staging login uses a Firebase CAPTCHA/bot check that can prevent automated login. To avoid automating the CAPTCHA, log in manually using a separate Chrome profile.
 
@@ -70,7 +70,7 @@ Open the HTML report:
 npx playwright show-report
 ```
 
-## Test Coverage
+ Test Coverage
 
 The test verifies that:
 
@@ -82,17 +82,10 @@ The test verifies that:
 6. The Graph tab displays `Gets hands wet`.
 7. The graph displays today's date in `MM/DD` format.
 
-## Test Data and Limitations
+ Test Data and Limitations
 
 - The test uses an existing staging account and student.
 - Account registration is not automated.
 - Each run may record or modify session data on staging. Avoid unnecessary repeated runs.
 - The test depends on the specified student, Reading goal, and step being available.
 - Automated login may be blocked by the staging CAPTCHA/bot protection.
-
-## Security
-
-- Store credentials in `.env`, not in source code.
-- Keep `.env` listed in `.gitignore`.
-- Never commit passwords, authentication tokens, or session files to GitHub.
-- Use test data only.
